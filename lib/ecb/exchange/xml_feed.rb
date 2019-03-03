@@ -32,7 +32,7 @@ module ECB
 
       private
 
-        def prior_friday(date)
+        def self.prior_friday(date)
           days_before = (date.wday + 1) % 7 + 1
           date.to_date - days_before
         end
