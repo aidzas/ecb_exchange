@@ -24,12 +24,18 @@ module ECB
         end
 
         # find rates in cache, or fetch (and cache)
+        date  = prior_friday(date)
         date  = date.to_s
         rates = Cache.read(date) || fetch_and_cache[date]
         rates ? rates : raise(DateNotFoundError.new(date))
       end
 
       private
+
+        def prior_friday(date)
+          days_before = (date.wday + 1) % 7 + 1
+          date.to_date - days_before
+        end
 
         def self.fetch_and_cache
           daily_rates = {}
