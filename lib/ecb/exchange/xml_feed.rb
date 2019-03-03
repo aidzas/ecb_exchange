@@ -6,7 +6,7 @@ module ECB
   module Exchange
     class XMLFeed
 
-      NINETY_DAY_ENDPOINT = "http://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml".freeze
+      NINETY_DAY_ENDPOINT = "https://www.ecb.europa.eu/stats/eurofxref/eurofxref-hist-90d.xml".freeze
       @endpoint = URI(NINETY_DAY_ENDPOINT)
 
       # allow a configurable endpoint
@@ -42,7 +42,9 @@ module ECB
         end
 
         def self.get_xml
-          resp = Net::HTTP.new(endpoint.host, endpoint.port).get(endpoint.path)
+          http = Net::HTTP.new(endpoint.host, endpoint.port)
+          http.use_ssl = true
+          resp = http.get(endpoint.path)
           if resp.code == "200"
             resp.body
           else
